@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="UTF-8">
@@ -12,6 +12,85 @@
     content name= "nofollow"/>
 </head>
 <body>
+
+<h1>An Inventory for Model Railway Collections</h1>
+
+<div id="formdiv">
+<h2>Insert data of your model here</h2>
+<form id="mainform">
+<label>Name of the model:<input type="text" id="name" required></label> </br>
+<label>Manufacturer of the model:<input type="text" id="Manufacturer" required></label> </br>
+<label>Model Registry Number:<input type="text" id="modelid"></label> </br>
+<label> Select the cathegory of your model </label>
+<select id="type" value="type">
+	<option value="locomotive">Locomotive</option>
+	<option value="wagon">Wagon</option>
+	<option value="coach">Coach</option>
+	<option value="other">Other</option>
+</select>
+</br>
+<label> Select the scale of your model </label>
+<select id="scale" type="scale">
+	<option value="O">O Scale</option>
+	<option value="OO">OO Gauge</option>
+	<option value="H0">H0 scale</option>
+	<option value="N">N Scale</option>
+</select>
+</br>
+<button type="submit"> Add </button>
+</form>
+
+<button onclick="ascsv()"> Convert to CSV </button>
+</div>
+
+<table id="collectiontable">
+<thead>
+	<tr>
+		<th>Name</th><th>Manufacturer</th><th>Registry Number</th><th>Type</th><th>Scale</th>
+	</tr>
+</thead>
+	<tbody></tbody>
+</table>
+</div>
+<script>
+
+const collectiontable = document.querySelector("#collectiontable tbody");
+let collection = JSON.parse(localStorage.getItem("collection")) || [];
+const form = document.getElementById("formdiv");
+
+
+function showcollection() {
+	collectiontable.innerHTML = "";
+	
+		collection.push(item);
+		localStorage.setItem("collection", JSON.stringify(collection));
+		showcollection();
+		e.target.reset();
+	collection.forEach((item) => {
+		const line = document.createElement("tr");
+		line.innerHTML = '<td>${item.name}</td><td>${item.Manufacturer}</td>${item.modelid}</td><td>${item.type}</td><td>${item.scale}</td>';
+	collectiontable.appendChild(line);
+	
+	});
+
+form.addEventListener("submit", e => {
+	e.preventDefault();
+	const item = {
+		name: document.getElementById("name").value,
+		Manufacturer: document.getElementById("Manufacturer").value,
+		modelid: document.getElementById("modelid").value,
+		type: document.getElementById("type").value,
+		scale: document.getElementById("scale").value
+		};
+		collection.push(item);
+		localStorage.setItem("collection", JSON.stringify(collection));
+		showcollection();
+		e.target.reset();
+
+});
+};
+showcollection();
+</script>
 </body>
 
 
